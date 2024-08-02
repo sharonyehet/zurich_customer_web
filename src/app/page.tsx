@@ -1,9 +1,10 @@
-import Login from "./(auth)/login/page";
+"use client";
+
+import { isAuthenticated } from "@/app/_lib/features/auth/auth.slice";
+import { useAppSelector } from "@/app/_lib/hooks";
 
 export default function Home() {
-	return (
-		<main>
-			<Login></Login>
-		</main>
-	);
+	const isUserAuthenticated = useAppSelector(isAuthenticated);
+
+	return <main></main>;
 }

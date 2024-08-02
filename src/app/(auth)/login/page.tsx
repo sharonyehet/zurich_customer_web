@@ -1,4 +1,32 @@
+"use client";
+
+import { setAuth } from "@/app/_lib/features/auth/auth.slice";
+import { useAppDispatch } from "@/app/_lib/hooks";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
+
 export default function Login() {
+	const dispatch = useAppDispatch();
+	const { data: session, status } = useSession();
+
+	useEffect(() => {
+		if (status === "loading") {
+			return;
+		}
+
+		const isAuthenticated = status === "authenticated";
+		if (isAuthenticated && session) {
+			const authData = {
+				authenticated: isAuthenticated,
+				userInfo: {
+					email: session?.user?.email || "",
+					name: session?.user?.name || "",
+				},
+			};
+			dispatch(setAuth(authData));
+		}
+	}, [session, status]);
+
 	return (
 		<section className="flex max-lg:flex-col">
 			<div className="lg:basis-1/2 grow-0">
@@ -17,7 +45,15 @@ export default function Login() {
 					<h2 className="text-gray-600 text-2xl my-5 text-center">
 						Please log in to continue
 					</h2>
-					<button className="btn-primary w-fit">
+					<button
+						type="button"
+						className="btn-primary w-fit"
+						onClick={() =>
+							signIn("google", {
+								callbackUrl: "/users",
+							})
+						}
+					>
 						Login With Google
 					</button>
 

@@ -1,46 +1,16 @@
 "use client";
 
-import { UserModel, UserPagingApiModel } from "@/app/_models/user.model";
+import { UserModel } from "@/app/_models/user.model";
+import { getFilteredUsers } from "@/app/_services/user.service";
 import { useState } from "react";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Users() {
-	const users: UserModel[] = getData();
 	const [showEmail, setShowEmail] = useState(false);
+	const users: UserModel[] = getFilteredUsers();
 
 	const onEmailVisbilityClick = () => {
 		setShowEmail(!showEmail);
 	};
-
-	function getData() {
-		const urlRoute = "https://reqres.in/api/users";
-		const resPage1 = useSWR<UserPagingApiModel>(
-			`${urlRoute}?page=1`,
-			fetcher
-		);
-
-		const resPage2 = useSWR<UserPagingApiModel>(
-			`${urlRoute}?page=2`,
-			fetcher
-		);
-
-		if (resPage1.error || resPage2.error) {
-			// This will activate the closest `error.js` Error Boundary
-			throw new Error("Failed to fetch data");
-		}
-
-		const res = resPage1.data?.data
-			.concat(resPage2.data?.data || [])
-			.filter(
-				(user) =>
-					user.first_name.toUpperCase().startsWith("G") ||
-					user.last_name.toUpperCase().startsWith("W")
-			);
-
-		return res || [];
-	}
 
 	return (
 		<section className="px-3 md:px-6 my-8">
@@ -57,8 +27,8 @@ export default function Users() {
 				></img>
 			</div>
 
-			<div className="rounded-lg bg-gray-100 p-2 md:pt-0 ">
-				<table className="min-w-full text-gray-900 md:table md:table-fixed">
+			<div className="rounded-lg bg-gray-100 p-2 md:pt-0 overflow-x-auto">
+				<table className="w-full text-gray-900 md:table">
 					<thead className="rounded-lg text-left text-sm font-normal">
 						<tr>
 							<th scope="col" className="px-3 py-5 font-medium">
@@ -77,12 +47,21 @@ export default function Users() {
 					</thead>
 					<tbody className="bg-white">
 						{users.map((user) => (
-							<tr className="w-full py-3 text-sm rounded-sm border-b :last-of-type:border-none">
+							<tr
+								className="w-full py-3 text-sm rounded-sm border-b :last-of-type:border-none"
+								key={user.id}
+							>
 								<td className="whitespace-nowrap px-3 py-3">
 									{user.id}
 								</td>
 								<td className="whitespace-nowrap px-3 py-3">
-									{user.first_name}
+									<div className="flex gap-x-3 items-center">
+										<img
+											className="w-8 h-8 object-cover rounded-full"
+											src={user.avatar}
+										></img>
+										<span>{user.first_name}</span>
+									</div>
 								</td>
 								<td className="whitespace-nowrap px-3 py-3">
 									{user.last_name}
