@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). 
+
+**Mobile responsive is supported here.**
 
 ## Getting Started
 
@@ -16,21 +18,25 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Landing
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Unauthenticated user will be redirected to [Login Page](http://localhost:3000/login);
 
-## Learn More
+Authenticated user will be redirected to [Users Page](http://localhost:3000/users). User name will be displayed in the header section and provided options to **Logout**.
 
-To learn more about Next.js, take a look at the following resources:
+## Login
+[http://localhost:3000/login](http://localhost:3000/login)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Login with your google account.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Users List
+[http://localhost:3000/users](http://localhost:3000/users)
 
-## Deploy on Vercel
+Only authenticated users are accessible to this page. Unauthenticated users will be redirected to the [Permission Denined Page](http://localhost:3000/permission-denied).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Users' emails are masked by default. Click on the 'eye' icon on top right to toggle email visibility.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Permission Denied
+[http://localhost:3000/permission-denied](http://localhost:3000/permission-denied)
+
+An error page for unauthenticated access. Users are provided options to login here.

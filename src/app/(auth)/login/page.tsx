@@ -1,31 +1,19 @@
 "use client";
 
-import { setAuth } from "@/app/_lib/features/auth/auth.slice";
-import { useAppDispatch } from "@/app/_lib/hooks";
-import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { isAuthenticated } from "@/app/_lib/features/auth/auth.slice";
+import { useAppSelector } from "@/app/_lib/hooks";
+import { signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 export default function Login() {
-	const dispatch = useAppDispatch();
-	const { data: session, status } = useSession();
+	const isUserAuthenticated = useAppSelector(isAuthenticated);
 
-	useEffect(() => {
-		if (status === "loading") {
-			return;
+	useLayoutEffect(() => {
+		if (isUserAuthenticated) {
+			redirect("/users");
 		}
-
-		const isAuthenticated = status === "authenticated";
-		if (isAuthenticated && session) {
-			const authData = {
-				authenticated: isAuthenticated,
-				userInfo: {
-					email: session?.user?.email || "",
-					name: session?.user?.name || "",
-				},
-			};
-			dispatch(setAuth(authData));
-		}
-	}, [session, status]);
+	});
 
 	return (
 		<section className="flex max-lg:flex-col">

@@ -54,7 +54,7 @@ export default function Users() {
 								<td className="whitespace-nowrap px-3 py-3">
 									{user.id}
 								</td>
-								<td className="whitespace-nowrap px-3 py-3">
+								<td className="whitespace-nowrap px-3 py-3 min-w-[200px]">
 									<div className="flex gap-x-3 items-center">
 										<img
 											className="w-8 h-8 object-cover rounded-full"
@@ -63,10 +63,10 @@ export default function Users() {
 										<span>{user.first_name}</span>
 									</div>
 								</td>
-								<td className="whitespace-nowrap px-3 py-3">
+								<td className="whitespace-nowrap px-3 py-3 min-w-[200px]">
 									{user.last_name}
 								</td>
-								<td className="whitespace-nowrap px-3 py-3">
+								<td className="whitespace-nowrap px-3 py-3 min-w-[300px]">
 									<div className="flex justify-between gap-x-2">
 										<span>
 											{showEmail ? user.email : "******"}
