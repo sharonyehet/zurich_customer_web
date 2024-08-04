@@ -3,8 +3,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 This project is for Zurich Web Developer assignment, developed by Sharon. There are pages including Login, Users List, and Permission Denied with mobile responsive supported. Kindly refer to below for more details. Unit testing for these pages is included as well.
 
 ## Getting Started
-
-First, run the development server:
+1. Clone the project and install required dependencies.
+2. Run the development server:
 
 ```bash
 npm run dev
@@ -16,7 +16,7 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ### Landing
 
