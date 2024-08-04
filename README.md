@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). 
 
-**Mobile responsive is supported here.**
+This project is for Zurich Web Developer assignment, developed by Sharon. There are pages including Login, Users List, and Permission Denied with mobile responsive supported. Kindly refer to below for more details. Unit testing for these pages is included as well.
 
 ## Getting Started
 

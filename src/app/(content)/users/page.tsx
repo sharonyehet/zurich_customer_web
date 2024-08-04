@@ -22,6 +22,7 @@ export default function Users() {
 				</div>
 				<img
 					className="w-5 h-5 cursor-pointer"
+					alt="email visibility button"
 					src={showEmail ? "visibility_on.svg" : "visibility_off.svg"}
 					onClick={() => onEmailVisbilityClick()}
 				></img>

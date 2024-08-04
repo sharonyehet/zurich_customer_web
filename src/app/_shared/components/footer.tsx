@@ -6,7 +6,9 @@ export default function Footer(props: FooterProps) {
 			<div className="flex justify-between gap-x-2 text-blue-900 font-extralight text-xs md:text-sm">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 ">
 					{props.links.map((link) => (
-						<a href={link.destinationUrl}>{link.label}</a>
+						<a key={link.label} href={link.destinationUrl}>
+							{link.label}
+						</a>
 					))}
 				</div>
 
