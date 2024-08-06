@@ -1,16 +1,25 @@
 "use client";
 
+import { getUsers } from "@/app/_lib/actions/fetch-users";
 import { UserModel } from "@/app/_models/user.model";
-import { getFilteredUsers } from "@/app/_services/user.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Users() {
 	const [showEmail, setShowEmail] = useState(false);
-	const users: UserModel[] = getFilteredUsers();
+	const [users, setUsers] = useState<UserModel[]>([]);
 
-	const onEmailVisbilityClick = () => {
+	const onEmailVisbilityClick = async () => {
 		setShowEmail(!showEmail);
 	};
+
+	useEffect(() => {
+		const fetchUsers = async () => {
+			const users = await getUsers(showEmail);
+			setUsers(users);
+		};
+
+		fetchUsers();
+	}, [showEmail]);
 
 	return (
 		<section className="px-3 md:px-6 my-8">
@@ -24,7 +33,7 @@ export default function Users() {
 					className="w-5 h-5 cursor-pointer"
 					alt="email visibility button"
 					src={showEmail ? "visibility_on.svg" : "visibility_off.svg"}
-					onClick={() => onEmailVisbilityClick()}
+					onClick={async () => await onEmailVisbilityClick()}
 				></img>
 			</div>
 
@@ -69,9 +78,7 @@ export default function Users() {
 								</td>
 								<td className="whitespace-nowrap px-3 py-3 min-w-[300px]">
 									<div className="flex justify-between gap-x-2">
-										<span>
-											{showEmail ? user.email : "******"}
-										</span>
+										<span>{user.email}</span>
 									</div>
 								</td>
 							</tr>
