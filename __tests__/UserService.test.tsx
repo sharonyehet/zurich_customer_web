@@ -1,21 +1,14 @@
+import {
+	getAllUsers,
+	getUserEmail,
+	getUsers,
+} from "@/app/_lib/actions/fetch-users";
 import { UserPagingApiModel } from "@/app/_models/user.model";
-import { getFilteredUsers, getUsers } from "@/app/_services/user.service";
-import useSWR from "swr";
-
-// Mock the `useSWR` hook
-jest.mock("swr", () => ({
-	__esModule: true,
-	default: jest.fn(),
-}));
 
 describe("User Service", () => {
-	const mockUseSWR = useSWR as jest.Mock;
-
 	beforeEach(() => {
-		jest.resetAllMocks(); // Reset mocks before each test
-	});
+		global.fetch = jest.fn();
 
-	it("getUsers should return combined data from two pages", () => {
 		const mockPage1: UserPagingApiModel = {
 			data: [
 				{
@@ -25,60 +18,11 @@ describe("User Service", () => {
 					email: "john@example.com",
 					avatar: "avatar1.png",
 				},
-			],
-			page: 1,
-			per_page: 1,
-			total: 2,
-			total_pages: 2,
-		};
-		const mockPage2: UserPagingApiModel = {
-			data: [
 				{
 					id: 2,
-					first_name: "Jane",
-					last_name: "Smith",
-					email: "jane@example.com",
-					avatar: "avatar2.png",
-				},
-			],
-			page: 2,
-			per_page: 1,
-			total: 2,
-			total_pages: 1,
-		};
-
-		mockUseSWR.mockImplementation((url: string) => {
-			if (url.includes("page=1")) {
-				return { data: mockPage1, error: null };
-			}
-			if (url.includes("page=2")) {
-				return { data: mockPage2, error: null };
-			}
-			return { data: [], error: null };
-		});
-
-		const users = getUsers();
-
-		expect(users).toHaveLength(2);
-		expect(users[0].first_name).toBe("John");
-		expect(users[1].first_name).toBe("Jane");
-	});
-
-	it("getFilteredUsers should filter users based on name criteria", () => {
-		const mockPage1: UserPagingApiModel = {
-			data: [
-				{
-					id: 1,
-					first_name: "George",
-					last_name: "Doe",
-					email: "george@example.com",
-					avatar: "avatar1.png",
-				},
-				{
-					id: 2,
-					first_name: "Jane",
-					last_name: "Smith",
-					email: "jane@example.com",
+					first_name: "Janet",
+					last_name: "Weaver",
+					email: "janet@example.com",
 					avatar: "avatar2.png",
 				},
 			],
@@ -91,32 +35,67 @@ describe("User Service", () => {
 			data: [
 				{
 					id: 3,
-					first_name: "Johnson",
-					last_name: "Will",
-					email: "will@example.com",
+					first_name: "George",
+					last_name: "Bluth",
+					email: "george@example.com",
 					avatar: "avatar3.png",
 				},
 			],
 			page: 2,
 			per_page: 2,
 			total: 3,
-			total_pages: 2,
+			total_pages: 1,
 		};
 
-		mockUseSWR.mockImplementation((url: string) => {
-			if (url.includes("page=1")) {
-				return { data: mockPage1, error: null };
-			}
-			if (url.includes("page=2")) {
-				return { data: mockPage2, error: null };
-			}
-			return { data: [], error: null };
-		});
+		(fetch as jest.Mock).mockImplementation((url: string) => {
+			let mockData: UserPagingApiModel;
 
-		const filteredUsers = getFilteredUsers();
+			if (url.includes("page=1")) {
+				mockData = mockPage1;
+			} else {
+				mockData = mockPage2;
+			}
+
+			return Promise.resolve({
+				json: jest.fn().mockResolvedValue(mockData),
+			});
+		});
+	});
+
+	it("getAllUsers should return combined data from two pages", async () => {
+		const users = await getAllUsers();
+
+		expect(users).toHaveLength(3);
+		expect(users[0].first_name).toBe("John");
+		expect(users[1].first_name).toBe("Janet");
+		expect(users[2].first_name).toBe("George");
+	});
+
+	it("getUsers should filter users based on name criteria", async () => {
+		const filteredUsers = await getUsers(false);
 
 		expect(filteredUsers).toHaveLength(2);
-		expect(filteredUsers[0].first_name).toBe("George");
-		expect(filteredUsers[1].last_name).toBe("Will");
+		expect(filteredUsers[0].last_name).toBe("Weaver");
+		expect(filteredUsers[1].first_name).toBe("George");
+	});
+
+	it("getUserEmail should return email of selected user", async () => {
+		(fetch as jest.Mock).mockImplementation((url: string) => {
+			return Promise.resolve({
+				json: jest.fn().mockResolvedValue({
+					data: {
+						id: 2,
+						first_name: "Janet",
+						last_name: "Weaver",
+						email: "janet@example.com",
+						avatar: "avatar2.png",
+					},
+				}),
+			});
+		});
+
+		const email = await getUserEmail(2);
+
+		expect(email).toEqual("janet@example.com");
 	});
 });

@@ -6,7 +6,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export async function getAllUsers(
 	page = 1,
-	allUsers = []
+	allUsers: UserModel[] = []
 ): Promise<UserModel[]> {
 	const url = `https://reqres.in/api/users?page=${page}`;
 	const { data, total_pages } = await fetcher(url);
@@ -33,4 +33,17 @@ export async function getUsers(showEmail: boolean): Promise<UserModel[]> {
 			}
 			return user;
 		});
+}
+
+export async function getUserEmail(userId: number): Promise<string> {
+	const url = `https://reqres.in/api/users?id=${userId}`;
+	const { data } = await fetcher(url);
+
+	return new Promise((resolve, reject) => {
+		if (data) {
+			resolve(data.email);
+		}
+
+		reject();
+	});
 }

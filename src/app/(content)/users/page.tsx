@@ -1,40 +1,35 @@
 "use client";
 
 import { getUsers } from "@/app/_lib/actions/fetch-users";
+import { getEmail } from "@/app/_lib/features/users/users.slice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/hooks";
 import { UserModel } from "@/app/_models/user.model";
 import { useEffect, useState } from "react";
 
 export default function Users() {
-	const [showEmail, setShowEmail] = useState(false);
 	const [users, setUsers] = useState<UserModel[]>([]);
+	const email = useAppSelector((state) => state.users);
+	const dispatch = useAppDispatch();
 
-	const onEmailVisbilityClick = async () => {
-		setShowEmail(!showEmail);
+	const onEmailVisbilityClick = (userId: number) => {
+		dispatch(getEmail(userId));
 	};
 
 	useEffect(() => {
 		const fetchUsers = async () => {
-			const users = await getUsers(showEmail);
+			const users = await getUsers(false);
 			setUsers(users);
 		};
 
 		fetchUsers();
-	}, [showEmail]);
+	}, []);
 
 	return (
 		<section className="px-3 md:px-6 my-8">
 			<h1 className="text-3xl text-blue-900 font-semibold">Users</h1>
 
-			<div className="flex justify-between items-center">
-				<div className="mt-8 mb-3 text-xs text-gray-400">
-					{users.length} results found
-				</div>
-				<img
-					className="w-5 h-5 cursor-pointer"
-					alt="email visibility button"
-					src={showEmail ? "visibility_on.svg" : "visibility_off.svg"}
-					onClick={async () => await onEmailVisbilityClick()}
-				></img>
+			<div className="mt-8 mb-3 text-xs text-gray-400">
+				{users.length} results found
 			</div>
 
 			<div className="rounded-lg bg-gray-100 p-2 md:pt-0 overflow-x-auto">
@@ -78,7 +73,21 @@ export default function Users() {
 								</td>
 								<td className="whitespace-nowrap px-3 py-3 min-w-[300px]">
 									<div className="flex justify-between gap-x-2">
-										<span>{user.email}</span>
+										<span>
+											{email[user.id] || user.email}
+										</span>
+										<img
+											className="w-5 h-5 cursor-pointer"
+											alt="email visibility button"
+											src={
+												email[user.id]
+													? "visibility_on.svg"
+													: "visibility_off.svg"
+											}
+											onClick={() =>
+												onEmailVisbilityClick(user.id)
+											}
+										></img>
 									</div>
 								</td>
 							</tr>
