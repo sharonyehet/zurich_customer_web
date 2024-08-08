@@ -1,5 +1,5 @@
 import Users from "@/app/(content)/users/page";
-import * as UserService from "@/app/_lib/actions/fetch-users";
+import * as UserService from "@/app/_server-actions/fetch-users";
 import "@testing-library/jest-dom";
 import { act, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
@@ -19,7 +19,7 @@ const store = mockStore({
 	users: {},
 });
 
-jest.mock("@/app/_lib/actions/fetch-users", () => ({
+jest.mock("@/app/_server-actions/fetch-users", () => ({
 	getUsers: jest.fn().mockReturnValue([
 		{
 			id: 1,

@@ -1,11 +1,11 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import { useAppSelector } from "../../_redux/hooks";
 import {
 	isAuthenticated,
 	selectUserName,
-} from "../../_lib/features/auth/auth.slice";
-import { useAppSelector } from "../../_lib/hooks";
+} from "../../_redux/slices/auth/auth.slice";
 import { HeaderProps } from "./models";
 
 export default function Header(props: HeaderProps) {

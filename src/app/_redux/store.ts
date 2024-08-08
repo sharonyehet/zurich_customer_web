@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
-import authReducer from "./features/auth/auth.slice";
-import usersReducer from "./features/users/users.slice";
+import authReducer from "./slices/auth/auth.slice";
+import usersReducer from "./slices/users/users.slice";
 
 export const makeStore = () => {
 	return configureStore({

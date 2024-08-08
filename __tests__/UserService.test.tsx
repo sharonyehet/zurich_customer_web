@@ -1,9 +1,9 @@
+import { UserPagingApiModel } from "@/app/_models/user.model";
 import {
 	getAllUsers,
 	getUserEmail,
 	getUsers,
-} from "@/app/_lib/actions/fetch-users";
-import { UserPagingApiModel } from "@/app/_models/user.model";
+} from "@/app/_server-actions/fetch-users";
 
 describe("User Service", () => {
 	beforeEach(() => {

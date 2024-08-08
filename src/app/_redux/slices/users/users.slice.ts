@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getUserEmail } from "../../actions/fetch-users";
+import { getUserEmail } from "../../../_server-actions/fetch-users";
 import { AppDispatch, RootState } from "../../store";
 
 interface IUserEmail {

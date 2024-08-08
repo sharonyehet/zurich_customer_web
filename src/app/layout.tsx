@@ -3,14 +3,14 @@
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { ReactNode, useEffect } from "react";
-import { setAuth } from "./_lib/features/auth/auth.slice";
-import { useAppDispatch } from "./_lib/hooks";
+import { NextAuthProvider } from "./_contexts/next-auth.provider";
+import StoreProvider from "./_contexts/store.provider";
+import { useAppDispatch } from "./_redux/hooks";
+import { setAuth } from "./_redux/slices/auth/auth.slice";
 import Footer from "./_shared/components/footer";
 import Header from "./_shared/components/header";
-import "./globals.css";
-import { NextAuthProvider } from "./next-auth.provider";
-import StoreProvider from "./store.provider";
 import { FooterItem } from "./_shared/components/models";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { isAuthenticated } from "@/app/_lib/features/auth/auth.slice";
-import { useAppSelector } from "@/app/_lib/hooks";
+import { useAppSelector } from "@/app/_redux/hooks";
+import { isAuthenticated } from "@/app/_redux/slices/auth/auth.slice";
 import { signIn } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useLayoutEffect } from "react";

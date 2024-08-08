@@ -1,9 +1,9 @@
 "use client";
 
-import { getUsers } from "@/app/_lib/actions/fetch-users";
-import { getEmail } from "@/app/_lib/features/users/users.slice";
-import { useAppDispatch, useAppSelector } from "@/app/_lib/hooks";
 import { UserModel } from "@/app/_models/user.model";
+import { useAppDispatch, useAppSelector } from "@/app/_redux/hooks";
+import { getEmail } from "@/app/_redux/slices/users/users.slice";
+import { getUsers } from "@/app/_server-actions/fetch-users";
 import { useEffect, useState } from "react";
 
 export default function Users() {
